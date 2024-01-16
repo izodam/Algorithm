@@ -17,7 +17,7 @@ def back(x):
             ans.append(num[i])
             prev = num[i]   # 지금 값 저장
             visited[i] = True   # 방문 함을 의미
-            back(x+1)
+            back(i+1)
             ans.pop()
             visited[i] = False
 
