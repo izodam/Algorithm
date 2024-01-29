@@ -42,6 +42,7 @@ for _ in range(N):
 res = 0
 for i in range(100):
     for j in range(100):
+        # 1*1 모서리 확인
         if graph[i][j] and graph[i+1][j] and graph[i][j+1] and graph[i+1][j+1]:
             res += 1
 print(res)
