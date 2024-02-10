@@ -1,38 +1,39 @@
-n=int(input())  #스위치 개수
-switch=list(map(int,input().split()))
-stu=int(input())    #학생 수
-for i in range(stu):
-    gen,num=map(int,input().split())
-    if gen==1:  #남자
-        for j in range(num-1,n,num):
-            if switch[j]==1:
-                switch[j]=0
-            else:
-                switch[j]=1
-    else:   #여자
-        j=num-1
-        k=1
-        if switch[j]==1:
-            switch[j]=0
-        else:
-            switch[j]=1
-        while True:
-            if j-k<0 or j+k>=n:
-                break
-            if switch[j-k]==switch[j+k]:
-                if switch[j-k]==1:
-                    switch[j-k]=0
-                elif switch[j-k]==0:
-                    switch[j-k]=1
+def turnswitch(switch, n):
+    if switch[n] == 1:
+        switch[n] = 0
+    else:
+        switch[n] = 1
 
-                if switch[j+k]==1:
-                    switch[j+k]=0
-                elif switch[j+k]==0:
-                    switch[j+k]=1
-            else:
+n = int(input())
+switch = list(map(int, input().split()))
+# 0번 인덱스 처리
+switch = [0] + switch
+stu = int(input())
+
+for _ in range(stu):
+    s, num = map(int,input().split())
+    # 남학생이면
+    if s == 1:
+        for i in range(num, n+1, num):
+            turnswitch(switch, i)
+    else:
+        i = 1
+        change = [num]
+        # 대칭 찾기
+        while True:
+            if num - i < 1 or num + i > n:
                 break
-            k+=1
-for i in range(n):
+            elif switch[num-i] != switch[num+i]:
+                break
+            else:
+                change.append(num+i)
+                change.append(num-i)
+            i += 1
+
+        # 스위치 바꾸기
+        for i in change:
+            turnswitch(switch, i)
+for i in range(1,n+1):
     print(switch[i],end=' ')
-    if i%20==19:
+    if i%20==0:
         print()
