@@ -14,13 +14,13 @@ def move(x, y, k):
         # 종료 조건
         if nx == x and ny == y:
             return score
-        if (nx, ny) in black:
-            return score
-
         # 벽 부딪히면 점수 추가
         if nx < 0 or nx >= n or ny < 0 or ny >= n:
             score += 1
             k = direction[4][k]
+
+        elif board[nx][ny] == -1:
+            return score
 
         # 블록 부딪히면 점수 추가
         elif 1 <= board[nx][ny] <= 5:
@@ -46,7 +46,6 @@ for tc in range(1, T + 1):
     board = [list(map(int, input().split())) for _ in range(n)]
     # 웜홀과 블랙홀 위치 받아놓기
     hole = {}
-    black = []
     for i in range(n):
         for j in range(n):
             if board[i][j] >= 6:
@@ -54,8 +53,7 @@ for tc in range(1, T + 1):
                     hole[board[i][j]].append((i, j))
                 else:
                     hole[board[i][j]] = [(i, j)]
-            elif board[i][j] == -1:
-                black.append((i, j))
+
     # print(black, hole)
     res = 0
     # i, j = 시작 위치
