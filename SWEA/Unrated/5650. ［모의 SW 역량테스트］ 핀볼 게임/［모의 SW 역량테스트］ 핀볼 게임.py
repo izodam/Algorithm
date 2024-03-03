@@ -14,10 +14,6 @@ def move(x, y, k):
         # 종료 조건
         if nx == x and ny == y:
             return score
-        # 벽 부딪히면 점수 추가
-        if nx < 0 or nx >= n or ny < 0 or ny >= n:
-            score += 1
-            k = direction[4][k]
 
         elif board[nx][ny] == -1:
             return score
@@ -43,11 +39,11 @@ T = int(input())
 for tc in range(1, T + 1):
     n = int(input())
     # -1 = 블랙홀, 1~5 = 블록, 6~10 = 웜홀
-    board = [list(map(int, input().split())) for _ in range(n)]
+    board = [[5]*(n+2)] + [[5]+list(map(int, input().split()))+[5] for _ in range(n)] + [[5]*(n+2)]
     # 웜홀과 블랙홀 위치 받아놓기
     hole = {}
-    for i in range(n):
-        for j in range(n):
+    for i in range(1, n+1):
+        for j in range(1, n+1):
             if board[i][j] >= 6:
                 if board[i][j] in hole:
                     hole[board[i][j]].append((i, j))
@@ -58,8 +54,8 @@ for tc in range(1, T + 1):
     res = 0
     # i, j = 시작 위치
     # k = 이동 방향
-    for i in range(n):
-        for j in range(n):
+    for i in range(1, n+1):
+        for j in range(1, n+1):
             if board[i][j] == 0:
                 for k in range(4):
                     score = move(i, j, k)
