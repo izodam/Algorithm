@@ -1,40 +1,35 @@
 from collections import deque
-t = int(input())
+import sys
+input = sys.stdin.readline
 
-dx = [-1, 1, 0, 0]
-dy = [0, 0, -1, 1]
+delta = [(1, 0), (-1, 0), (0, 1), (0, -1)]
 
-q = deque()
+def bfs(x, y):
+    q = deque()
+    q.append((x, y))
 
-def BFS(x,y):
-    # 방문처리
-    q.append((x,y))
-    graph[x][y] = 0
     while q:
-        x,y = q.popleft()
+        x, y = q.popleft()
         for i in range(4):
-            nx = x+dx[i]
-            ny = y+dy[i]
-
-            if nx<0 or ny<0 or nx>=m or ny>=n:
-                continue
-            if graph[nx][ny] == 1:
-                q.append((nx,ny))
+            nx, ny = x + delta[i][0], y + delta[i][1]
+            if 0 <= nx < n and 0 <= ny < m and graph[nx][ny] == 1:
                 graph[nx][ny] = 0
+                q.append((nx, ny))
 
 
-for i in range(t):
-    m,n,k = map(int,input().split())
-    graph = [[0]*n for _ in range(m)]
-    cnt = 0
 
-    for j in range(k):
-        x,y = map(int,input().split())
+T = int(input())
+for tc in range(1, T+1):
+    m, n, k = map(int,input().split())
+    graph = [[0] * m for _ in range(n)]
+    for _ in range(k):
+        y, x = map(int,input().split())
         graph[x][y] = 1
 
-    for a in range(m):
-        for b in range(n):
-            if graph[a][b] == 1:
-                BFS(a,b)
-                cnt += 1
-    print(cnt)
+    res = 0
+    for i in range(n):
+        for j in range(m):
+            if graph[i][j] == 1:
+                bfs(i, j)
+                res += 1
+    print(res)
