@@ -1,5 +1,8 @@
 from itertools import combinations
 from collections import deque
+import sys
+input = sys.stdin.readline
+
 
 dx = [1, -1, 0, 0]
 dy = [0, 0, 1, -1]
@@ -36,8 +39,10 @@ res = 0
 
 # 위치 3개 꺼내서 벽 세우기
 for wall in combinations(safe_zone, 3):
-    for i in range(n):
-        tmp[i][:] = graph[i][:]
+    # tmp = copy.deepcopy(graph)
+    # for i in range(n):
+    #     tmp[i][:] = graph[i][:]
+    tmp = [i.copy() for i in graph]
     for i, j in wall:
         tmp[i][j] = 1
 
