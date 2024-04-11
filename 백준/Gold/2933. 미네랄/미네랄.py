@@ -41,14 +41,14 @@ def move(bottom, group):
 
 
 def bfs(x, y):
-    group = []
+    group = set()
     q = deque()
     # visited = [[0] * c for _ in range(r)]
     bottom = x
 
     # 방문 처리
     q.append((x, y))
-    group.append((x, y))
+    group.add((x, y))
     board[x][y] = '.'
     # visited[x][y] = 1
 
@@ -60,7 +60,7 @@ def bfs(x, y):
             if 0 <= nx < r and 0 <= ny < c and board[nx][ny] == 'x':
                 bottom = max(bottom, nx)
                 q.append((nx, ny))
-                group.append((nx, ny))
+                group.add((nx, ny))
                 board[nx][ny] = '.'
     move(bottom, group)
 
