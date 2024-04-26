@@ -13,10 +13,6 @@ def bfs(x, y):
     graph[x][y] = '0'
     while q:
         x, y = q.popleft()
-        # print(doors)
-        # print(keys)
-        # print('\n'.join(map(str, graph)))
-        # print('--------------------------------------------------------------------')
         for i in range(4):
             nx, ny = x + dx[i], y+dy[i]
             if 0 <= nx <= h+1 and 0 <= ny <= w+1:
@@ -32,12 +28,6 @@ def bfs(x, y):
                     res += 1
                     q.append((nx, ny))
                     graph[nx][ny] = '0'
-                    # print(res)
-                    # print('doors:', doors)
-                    # print('keys: ',keys)
-                    # print('q', q)
-                    # print('\n'.join(map(str, graph)))
-                    # print('----------------------------------------------------------------------')
 
                 # 문일때
                 elif graph[nx][ny].isupper():
@@ -54,13 +44,9 @@ def bfs(x, y):
                     keys.add(key)
                     new_door = doors.copy()
                     for r, c, door in new_door:
-                        # print(f'here is door! {key}, {r},{c},{door}')
                         if key == door:
                             q.append((r, c))
                             doors.remove((r, c, door))
-                    # print(doors)
-                    # print(keys)
-                    # print('----------------------------------------------------------------------')
 
                     q.append((nx, ny))
                     graph[nx][ny] = '0'
@@ -80,8 +66,6 @@ for _ in range(tc):
     if k.isalpha():
         for i in k:
             keys.add(i.upper())
-    # print(keys)
-    # print('\n'.join(map(str,graph)))
 
     res = 0
     bfs(0,0)
