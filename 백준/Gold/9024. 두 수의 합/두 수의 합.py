@@ -2,6 +2,7 @@ import sys
 input = sys.stdin.readline
 
 tc = int(input())
+print_res = ''
 for _ in range(tc):
     n, k = map(int,input().split())
     nums = sorted(list(map(int,input().split())))
@@ -25,4 +26,6 @@ for _ in range(tc):
         else:
             end -= 1
 
-    print(res)
+
+    print_res += str(res) + '\n'
+print(print_res)
