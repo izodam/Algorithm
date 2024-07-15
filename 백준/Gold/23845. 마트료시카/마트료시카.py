@@ -13,7 +13,7 @@ for x in X:
         heapq.heappush(pq[x], -num)
 
 ans = 0
-for i in range(1, 100001):
+for i in range(1, 100002):
     while len(pq[i]) > 0:
         node = -heapq.heappop(pq[i])
         ans += node * (node - i + 1)
