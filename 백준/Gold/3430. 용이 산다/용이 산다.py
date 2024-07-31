@@ -1,59 +1,56 @@
-import sys, heapq
+import sys
+input = sys.stdin.readline
+import heapq
 
-# 입력부
-tc = int(sys.stdin.readline())
-for _ in range(tc):
-    n, m = map(int, sys.stdin.readline().split())
-    arr = list(map(int, sys.stdin.readline().split()))
-    
-    # empty : 현재 호수가 비었는지 아닌지를 저장하는 리스트
-    empty = [False] * (n + 1)
-    # can : 재앙을 피할 수 있는지 없는지 나타내는 flag 변수
-    can = True
-    # cache : 현재 호수 번호가 i일 때, 비가 오는 시간을 역순으로 저장하는 2차원 배열
-    cache = [[] for _ in range(n + 1)]
-    # time : 현재 시간 i에서 비가 올 때 해당하는 호수의 번호
-    time = [-1] * m
-    for i in range(m - 1, -1, -1):
-        if arr[i]:
-            time[i] = arr[i]
-            cache[arr[i]].append(i)
-            
-    # 가장 첫 시간을 우선순위 큐에 삽입
-    q = []
-    for i in range(1, n + 1):
-        if cache[i]:
-            heapq.heappush(q, cache[i].pop())
-            
-    # ans : 용이 마시는 호수 번호를 저장하는 리스트
-    ans = []
+z = int(input())
+for tc in range(z):
+    # n은 호수의 개수, m은 호수에 비가 내리는 날
+    n, m = map(int,input().split())
+    # 0이라면 i번째 날에는 비가 오지 않음 -> 용이 물 마심
+    rainy_day = list((map(int,input().split())))
+    # 호수 채워져있는지 확인 ->  채워져있으면 1
+    lake = [1] * (n + 1)
+    # 해당 호수에 비가 왔었는지 확인용
+    past = [-1] * (n + 1)
+    # i번째 날짜 다음에 확인해야 하는 날(비가 오는 같은 호수 중 i번째 날짜 다음 가장 빠른 날)
+    next_day = [-1] * m
+
+    res = []
+
+    # 우선순위 큐
+    # 먼저 마셔야 할 날짜
+    hq =[]
+
     for i in range(m):
-        # 현재 비가 온다면
-        if arr[i]:
-            # 비가 오는데 호수가 비지 않으면 재앙이 일어남
-            if not empty[arr[i]]:
-                can = False
-                break
-            # 비가 오는데 호수가 비었다면 그 다음 비오는 시간을 우선순위 큐에 저장
-            empty[arr[i]] = False
-            if cache[arr[i]]:
-                heapq.heappush(q, cache[arr[i]].pop())
-                
-        # 비가 오지 않는다면
-        else:
-            # 마실 수 있는 호수가 있다면 그리디하게 마신다
-            if q:
-                now = q[0]
-                heapq.heappop(q)
-                ans.append(time[now])
-                empty[time[now]] = True
-            # 마실 수 있는 호수가 없으니 0을 저장한다
+        # i번째 날에 비가 온다면
+        if rainy_day[i]:
+            # 해당 호수가 이전에 비가 온적이 없다면 날짜 우선순위 큐에 넣어주기
+            if past[rainy_day[i]] == -1:
+                heapq.heappush(hq, i)
+            # 비온적이 있다면 대기
             else:
-                ans.append(0)
-                
-    # 정답 출력
-    if not can:
-        print('NO')
+                next_day[past[rainy_day[i]]] = i
+            past[rainy_day[i]] = i
+
+    for i in range(m):
+        # 비가 온다면
+        if rainy_day[i]:
+            # 물이 차 있다면
+            if lake[rainy_day[i]]:
+                print("NO")
+                break
+            else:
+                lake[rainy_day[i]] = 1
+                # 마셔야 할 호수에 다음 날짜 추가
+                if next_day[i] != -1:
+                    heapq.heappush(hq, next_day[i])
+        else:
+            if hq:
+                drink = heapq.heappop(hq)
+                res.append(rainy_day[drink])
+                lake[rainy_day[drink]] = 0
+            else:
+                res.append(0)
     else:
-        print('YES')
-        print(' '.join(map(str, ans)))
+        print("YES")
+        print(' '.join(map(str, res)))
