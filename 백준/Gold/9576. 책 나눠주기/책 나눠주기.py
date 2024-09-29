@@ -1,22 +1,36 @@
 import sys
 input = sys.stdin.readline
 
-def find():
-    cnt = 0
-    for c in choice:
-        for i in range(c[0], c[1] + 1):
-            if not visited[i]:
-                visited[i] = 1
-                cnt += 1
-                break
-    return cnt
+def bimatch(n):
+    if visited[n]:
+        return False
+    visited[n] = True
+
+    for num in graph[n]:
+        if selected[num] == -1 or bimatch(selected[num]):
+            selected[num] = n
+            return True
+    return False
+
 
 t = int(input())
 
 for tc in range(t):
+    # m명에게 n개의 책 배부
     n, m = map(int,input().split())
-    choice = [list(map(int,input().split())) for _ in range(m)]
-    choice.sort(key=lambda x: (x[1], x[0]))
+    graph = []
+    for _ in range(m):
+        a, b = map(int,input().split())
+        graph.append([i for i in range(a, b+1)])
+    # 왼쪽이 사람, 오른쪽이 책번호
+    selected = [-1] * (n + 1)
 
-    visited = [0]*(n+1)
-    print(find())
+    for i in range(m):
+        visited = [False] * m
+        bimatch(i)
+
+    res = 0
+    for i in selected:
+        if i != -1:
+            res += 1
+    print(res)
