@@ -1,18 +1,18 @@
-# 1753번_heapq 사용
-import heapq
 import sys
 input = sys.stdin.readline
-
-V, E = map(int,input().split())
+import heapq
+n, m = map(int,input().split())
 k = int(input())
-INF = 10e8
-graph = [[] for _ in range(V+1)]
 
-for _ in range(E):
+# 해당 노드에서 출발했을 때의 (도착점, 가중치)
+graph = [[] for _ in range(n+1)]
+
+for _ in range(m):
     u, v, w = map(int,input().split())
     graph[u].append((v, w))
 
-distance = [INF for _ in range(V+1)]
+
+distance = [float('inf') for _ in range(n+1)]
 
 def dij(s):
     q = []
@@ -29,10 +29,10 @@ def dij(s):
                 distance[i[0]] = d + i[1]
                 heapq.heappush(q,(d+i[1], i[0]))
 
-
 dij(k)
+
 for i in distance[1:]:
-    if i == INF:
+    if i == float('inf'):
         print('INF')
     else:
         print(i)
