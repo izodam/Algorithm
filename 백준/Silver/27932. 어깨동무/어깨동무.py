@@ -1,3 +1,6 @@
+import sys
+input = sys.stdin.readline
+
 def shoulder_strap(mid, k):
     count = 0
     people = len(tall)
