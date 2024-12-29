@@ -1,23 +1,24 @@
 import sys
-input = sys.stdin.readline
 import heapq
 
 def dij(start):
     q = []
     heapq.heappush(q, (0, start))
     distance[start] = 0
+    cnt = 0
 
     while q:
         d, node = heapq.heappop(q)
         if d > distance[node] or d > m:
             continue
+        cnt += items[node]
 
         for next_node, next_dis in graph[node]:
             now = next_dis + d
             if now < distance[next_node] and now <= m:
                 distance[next_node] = now
                 heapq.heappush(q, (now, next_node))
-
+    return cnt
 
 
 n, m, r = map(int,input().split())
@@ -34,10 +35,10 @@ for _ in range(r):
 res = 0
 for i in range(1, n+1):
     distance = [INF] * (n+1)
-    dij(i)
-    cnt = 0
-    for node in range(1, n+1):
-        if distance[node] <= m:
-            cnt += items[node]
-    res = max(res, cnt)
+    # dij(i)
+    # cnt = 0
+    # for node in range(1, n+1):
+    #     if distance[node] <= m:
+    #         cnt += items[node]
+    res = max(res, dij(i))
 print(res)
