@@ -1,30 +1,34 @@
 import sys
 input = sys.stdin.readline
-import heapq
+sys.setrecursionlimit(10**9)
+def find(x):
+    if x != parent[x]:
+        parent[x] = find(parent[x])
+    return parent[x]
 
-def prim(start):
-    visited = [0] * (V+1)
-    q = [(0, start)]
-    res = 0
+def union(x, y):
+    a = find(x)
+    b = find(y)
 
-    while q:
-        cost, v = heapq.heappop(q)
-        if visited[v]:
-            continue
-
-        visited[v] = 1
-        res += cost
-
-        for u, w in graph[v]:
-            if not visited[u]:
-                heapq.heappush(q, (w, u))
-    return res
+    if a < b:
+        parent[b] = a
+    else:
+        parent[a] = b
 
 V, E = map(int,input().split())
-graph = [[] for _ in range(V+1)]
+edges = []
 for _ in range(E):
-    a, b, c = map(int,input().split())
-    graph[a].append((b, c))
-    graph[b].append((a, c))
+    a, b, c= map(int,input().split())
+    edges.append((a, b, c))
 
-print(prim(1))
+# 가중치 기준으로 정렬
+edges.sort(key=lambda x: x[2])
+
+parent = [i for i in range(V+1)]
+
+res = 0
+for a, b, cost in edges:
+    if find(a) != find(b):
+        res += cost
+        union(a, b)
+print(res)
